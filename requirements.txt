@@ -1,0 +1,5 @@
+pymongo>=3.10.0
+requests>=2.22.0
+Scrapy>=1.8.0
+tornado>=6.0.3
+configobj==5.0.6
