@@ -1,8 +1,8 @@
-# url-crawl
+# url-crawler
 
 ##### Hey! Are there any url giving 404 on your page? Let's check it out!
 
-- **ur-crawl**  finds whether the HTTP Status Code you specified for given url, exists and provides detailed reporting.
+- **url-crawler**  finds whether the HTTP Status Code you specified for given url, exists and provides detailed reporting.
 
 # Getting Started
 
