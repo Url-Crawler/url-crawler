@@ -1,7 +1,6 @@
 import scrapy
 import pymongo
 from helpers.mongo_helper import *
-from repository.crawler_repository import *
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.log import configure_logging
 from datetime import datetime,timedelta
