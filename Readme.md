@@ -112,10 +112,10 @@ In MongoDB, you can find Database whose name is UrlCrawler and 2 Collection such
 
 **Crawl_Links :** It gives the data for summary of service call and generate Group ID for can query Crawl_Detail with it called group_id. 
 
-```json
+```
     {
         "_id" : ObjectId("xxxx-xxxxx-xxxxxx"),  // auto-generated-id
-        "group_id" : "yyyy-yyyyy-yyyyyy", // id for service         referance call
+        "group_id" : "yyyy-yyyyy-yyyyyy", // id for service referance call
         "href" : "https://www.yourdomain.com",  // url that you want to crawl
         "date" : "2020-10-25T20:27:13.000Z", // request date
         "queryType" : "General"  // /crawl --> General Type of Crawl
@@ -125,13 +125,13 @@ In MongoDB, you can find Database whose name is UrlCrawler and 2 Collection such
 
 **Crawl_Detail:** It gives the data for detail of service call by Group ID. You can see different url with the same group_id that means there are multiple HTTP codes you specified in your url.
 
-```json
+```
 {
     "_id" : ObjectId("xxxx-xxxxx-xxxxxx-1"),  // auto-generated-id
-    "group_id" : "yyyy-yyyyy-yyyyyy", // id for service         referance call
+    "group_id" : "yyyy-yyyyy-yyyyyy", // id for service referance call
     "link" : "https://www.yourdomain.com/aboutme;", // one the link in your domain address
     "request_date" : "2020-10-25T20:27:13.000",
-    "status" : 400, // https://www.yourdomain.com/aboutme                                   gives you 400 (Bad Request)
+    "status" : 400, // https://www.yourdomain.com/aboutme gives you 400 (Bad Request)
     "headers" : {
         "Cache-Control" : "private",
         "Content-Length" : "11",
@@ -145,10 +145,10 @@ In MongoDB, you can find Database whose name is UrlCrawler and 2 Collection such
 
 {
     "_id" : ObjectId("xxxx-xxxxx-xxxxxx-2"),  // auto-generated-id
-    "group_id" : "yyyy-yyyyy-yyyyyy", // id for service         referance call
+    "group_id" : "yyyy-yyyyy-yyyyyy", //id for service referance call
     "link" : "https://www.yourdomain.com/contactus;", // one the link in your domain address
     "request_date" : "2020-10-25T20:27:13.000",
-    "status" : 404, // https://www.yourdomain.com/contactus                                  gives you 404 (Not Found)
+    "status" : 404, // https://www.yourdomain.com/contactus gives you 404 (Not Found)
     "headers" : {
         "Cache-Control" : "private",
         "Content-Length" : "11",
