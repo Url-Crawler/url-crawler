@@ -1,15 +1,19 @@
 import json
 import uuid
 import urllib
+
+from tornado import ioloop, web
 from bson.json_util import dumps, loads
 from bson import json_util
-import multiprocessing as mp
-from tornado import ioloop, web
-from helpers.mongo_helper import *
+
+from helpers.mongo_helper import Crawl_Detail
 from helpers.request_helper import execute_to_ping, request_validation, createResponse
+from helpers.pool_helper import CrawlManager
 import Modules.spider as spiderModule
 from handler.not_found_handler import NotFoundHandler
-from SpiderCreator.crawler_factory import *
+from SpiderCreator.crawler_factory import CrawlerFactory
+
+
 
 class SpiderHandler(web.RequestHandler):
 
@@ -35,12 +39,11 @@ class SpiderHandler(web.RequestHandler):
             max_request_count = 6
             g_id = str(uuid.uuid4())
 
-            pool = mp.Pool(max_request_count)
             spider = spider_content()
             args = (data["url"],g_id)
-            pool.apply_async(spider.work,args=args)
-            pool.close()
-            pool.join()
+     
+            manager = CrawlManager()
+            manager.new_task(spider=spider,args=args)
 
             execute_to_ping(data["status"],g_id,queryTypeValue)            
             
