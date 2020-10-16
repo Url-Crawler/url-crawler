@@ -1,23 +1,21 @@
 import scrapy
-import pymongo
-from helpers.mongo_helper import *
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.log import configure_logging
+from scrapy.http import HtmlResponse
 from datetime import datetime,timedelta
 from urllib.parse import urlparse
-from scrapy.http import HtmlResponse
 
+from helpers.mongo_helper import Crawl_Links
+from .helper.css_selector import CssSelector
 
 class DetailUrlCrawler(scrapy.Spider):
     name = "DetailUrlCrawler"
-    start_urls = []
     queryTypeValue = "Detail"
-    g_id = ""
     result = []
     crawled = []
     counter = True
-    url_parse = ""
     handle_httpstatus_list = [404, 500]
+    
     def parse(self, response):
         url = self.url_parse.scheme+"//"+self.url_parse.netloc
         pagination_href = response.css('[class^="pagination"] a::attr(href)').extract()
@@ -27,24 +25,13 @@ class DetailUrlCrawler(scrapy.Spider):
         end = response.find("<footer ")
         response = HtmlResponse(url=url, body=response[start:end], encoding='utf-8')
 
-        all_href = response.css('a:not([href^="http"])')
-        all_href = all_href.css('a:not([href^="partners"])')
-        all_href = all_href.css('a:not([href^="#"])')
-        all_href = all_href.css('a:not([href="/mobil"])')
-        all_href = all_href.css('a:not([href^="{"])')
-        all_href = all_href.css('a:not([href^="//js"])')
-        all_href = all_href.css('a:not([href^="/www"])')
-        all_href = all_href.css('a:not([href^="//www"])')
-        all_href = all_href.css('a:not([href^="//"])')
-        href = href.css('a:not([href^="mailto:"])')
-        href = href.css('a:not([href^="Javascript:"])')
-        #href = href.xpath('//a[not(contains(@href, ":"))]')
-        all_href = all_href.css('a:not([href^="'+self.url_parse.path+'?"])')
-        all_href = all_href.css('a:not([href^="javascript"])::attr(href)').extract()
+        css_selector = CssSelector()
+        href = css_selector.extracting_href(response)
+        href = href.extract()
 
         parts = self.url_parse.path.split('/')
         parts = ( ['/'.join(parts[:index+1]) for index in range(len(parts))])
-        self.result.extend(list((set(all_href)-set(pagination_href))-set(parts)))
+        self.result.extend(list((set(href)-set(pagination_href))-set(parts)))
         
         if self.counter:
             self.crawled = self.result.copy()

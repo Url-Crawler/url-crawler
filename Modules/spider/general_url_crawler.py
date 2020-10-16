@@ -1,34 +1,22 @@
 import scrapy
-import pymongo
-from helpers.mongo_helper import *
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.log import configure_logging
 from datetime import datetime,timedelta
 from urllib.parse import urlparse
 
+from helpers.mongo_helper import Crawl_Links
+from .helper.css_selector import CssSelector
+
 class GeneralUrlCrawler(scrapy.Spider):
     name = "GeneralUrlCrawler"
     queryTypeValue = "General"
-    start_urls = []
-    g_id = ""
-    url_parse = ""
+    
     def parse(self, response):
         url = self.url_parse.scheme+"://"+self.url_parse.netloc
 
-        href = response.css('a:not([href^="http"])')
-        href = href.css('a:not([href^="partners"])')
-        href = href.css('a:not([href^="#"])')
-        href = href.css('a:not([href="/mobil"])')
-        href = href.css('a:not([href^="{"])')
-        href = href.css('a:not([href^="//js"])')
-        href = href.css('a:not([href^="/www"])')
-        href = href.css('a:not([href^="//www"])')
-        href = href.css('a:not([href=""])')
-        href = href.css('a:not([href^="mailto:"])')
-        href = href.css('a:not([href^="Javascript:"])')
-        #href = href.xpath('//a[not(contains(@href, ":"))]')
-        href = href.css('a:not([href^="//"])')
-        href = href.css('a:not([href^="javascript"])::attr(href)').extract()
+        css_selector = CssSelector()
+        href = css_selector.extracting_href(response)
+        href = href.extract()
 
         href = set(href)
         for h in href:
